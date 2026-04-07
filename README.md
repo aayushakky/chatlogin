@@ -6,3 +6,4 @@
 3. Run Application.java
 4. Test:
    POST http://localhost:8080/auth/login
+# chatlogin
