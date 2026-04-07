@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>SCTPL ChatBot Login</title>
+
+<style>
+body {
+    font-family: "Segoe UI", Arial;
+    background-color: #f2f2f2;
+    margin: 0;
+}
+
+/* HEADER */
+.header {
+    background: #0f0f0f;
+    color: #fff;
+    padding: 14px 25px;
+    font-size: 16px;
+}
+
+/* MAIN BOX */
+.container {
+    width: 480px;        /* ⬅️ reduced size */
+    margin: 60px auto;   /* ⬅️ slightly tighter */
+    background: #e6e6e6;
+    padding: 40px;       /* ⬅️ less padding */
+    position: relative;
+}
+/* TITLE */
+h2 {
+    font-weight: 400;
+    color: #2c5c85;
+    font-size: 24px;       /* 🔥 bigger text */
+    line-height: 1.6;      /* 🔥 proper spacing between lines */
+    margin-bottom: 30px;
+}
+
+/* LABEL */
+label {
+    font-size: 13px;
+    color: #2c5c85;
+}
+
+/* INPUT BOX */
+.input-box {
+    width: 220px;
+}
+
+/* INPUT */
+input {
+    width: 100%;
+    padding: 8px 5px;
+    margin: 8px 0 25px 0;
+    border: none;
+    border-bottom: 1px solid #999;
+    background: transparent;
+}
+
+/* ERROR BORDER */
+.input-box.error input {
+    border: 1px solid red;
+}
+
+/* ERROR ICON */
+.input-box span {
+    position: absolute;
+    right: 5px;
+    top: 10px;
+    width: 16px;
+    height: 16px;
+    background: red;
+    color: white;
+    font-size: 12px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 16px;
+    display: none;
+}
+
+/* SHOW ERROR ICON */
+.input-box.error span {
+    display: block;
+}
+
+/* BUTTON */
+button {
+    padding: 8px 20px;
+    border: 1px solid #999;
+    background: #e0e0e0;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #d6d6d6;
+}
+
+/* ERROR TEXT */
+.error {
+    color: red;
+    margin-top: 10px;
+}
+
+/* FORM AREA */
+.form-area {
+    width: 60%;
+}
+
+/* LOGO BOTTOM RIGHT */
+.logo-area {
+    position: absolute;
+    bottom: 25px;
+    right: 25px;
+}
+
+.logo-area img {
+    width: 130px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="header">SlashCurate Technologies PVT LTD.</div>
+
+<div class="container">
+
+    <div class="form-area">
+
+        <h2>
+    Welcome to SlashCurate Technologies<br>
+    PVT LTD.
+</h2>
+
+        <!-- USERNAME -->
+        <label>User name</label>
+        <div class="input-box" id="userBox">
+            <input type="text" id="username">
+            <span>!</span>
+        </div>
+
+        <!-- PASSWORD -->
+        <label>Password</label>
+        <div class="input-box" id="passBox">
+            <input type="password" id="password">
+            <span>!</span>
+        </div>
+
+        <button onclick="login()">Log In</button>
+
+        <div id="error" class="error"></div>
+
+    </div>
+
+    <!-- LOGO -->
+    <div class="logo-area">
+        <img src="images/sclogo.png" alt="Logo">
+    </div>
+
+</div>
+
+<script>
+async function login() {
+
+    let username = document.getElementById("username").value;
+    let password = document.getElementById("password").value;
+
+    let message = username + " " + password;
+
+    try {
+        let res = await fetch("./chatLogin", {  // 🔥 DO NOT CHANGE
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({message: message})
+        });
+
+        let data = await res.json();
+
+        if (data.redirect) {
+            window.location.href = data.redirect;
+        } else {
+            document.getElementById("error").innerText = data.reply;
+        }
+
+    } catch (e) {
+        document.getElementById("error").innerText = "Server error";
+    }
+}
+</script>
+
+</body>
+</html>
